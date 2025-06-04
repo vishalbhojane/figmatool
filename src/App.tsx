@@ -18,7 +18,7 @@ interface FigmaNode {
 const FIGMA_TOKEN_KEY = 'figma_api_token';
 
 const App: React.FC = () => {
-  const [figmaUrl, setFigmaUrl] = useState('https://www.figma.com/design/HTTCsDIPLr6vLpFA4o4QUM/SSTesting?node-id=404-206&t=VBR6lDJAhk9S2f95-4');
+  const [figmaUrl, setFigmaUrl] = useState('');
   const [figmaToken, setFigmaToken] = useState('');
   const [componentTree, setComponentTree] = useState<FigmaNode | null>(null);
   const [generatedCode, setGeneratedCode] = useState('');
