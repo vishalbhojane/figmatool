@@ -3,22 +3,26 @@
   "version": "0.1.0",
   "description": "A tool to convert Figma designs to code",
   "main": "index.js",
+  "homepage": "https://vishalbhojane.github.io/figmatool",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build" 
   },
   "dependencies": {
+    "axios": "^1.6.2",
+    "figma-api": "^1.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "axios": "^1.6.2",
-    "figma-api": "^1.11.0"
+    "react-scripts": "5.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "gh-pages": "^6.3.0",
     "typescript": "^4.9.5"
   },
   "browserslist": {
@@ -33,4 +37,4 @@
       "last 1 safari version"
     ]
   }
-} 
+}
