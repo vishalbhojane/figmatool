@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/figmatool/static/css/main.81273a8b.css",
+    "main.js": "/figmatool/static/js/main.b080426a.js",
+    "index.html": "/figmatool/index.html",
+    "main.81273a8b.css.map": "/figmatool/static/css/main.81273a8b.css.map",
+    "main.b080426a.js.map": "/figmatool/static/js/main.b080426a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.81273a8b.css",
+    "static/js/main.b080426a.js"
+  ]
+}
