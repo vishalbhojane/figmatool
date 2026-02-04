@@ -20,7 +20,7 @@ A tool to convert Figma designs to React code.
 
 1. Clone the repository
 ```
-git clone https://github.com/yourusername/figmatool.git
+git clone git@github.com:vishalbhojane/figmatool.git
 cd figmatool
 ```
 
@@ -38,12 +38,4 @@ npm start
 
 1. Add your Figma API token in the application
 2. Enter your Figma file URL
-3. Select components to convert
-4. Generate code
-
-## Roadmap
-
-- [ ] Support for more React frameworks (Next.js, Gatsby)
-- [ ] Add export options for different styling approaches (CSS, styled-components, Tailwind)
-- [ ] Improve component hierarchy parsing
-- [ ] Add responsive design conversion 
+3. Generate code
