@@ -27,7 +27,7 @@ button {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;
-  margin-right: 0.5rem;
+  flex-shrink: 0;
 }
 
 button:hover {
@@ -125,6 +125,14 @@ small {
   overflow-y: auto;
 }
 
+.token-input-wrapper {
+  margin-bottom: 1rem;
+}
+
+.token-input-wrapper input{
+  margin-bottom: 0;
+}
+
 .token-actions {
   display: flex;
   gap: 0.5rem;
@@ -152,3 +160,34 @@ small {
   background-color: #cccccc;
   cursor: not-allowed;
 } 
+
+/* toast styles */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast-content {
+  background-color: #323232;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+  animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.toast-fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+  transition: all 0.3s ease-in;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

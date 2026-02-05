@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 
 interface FigmaInputProps {
   figmaUrl: string;
@@ -19,78 +19,96 @@ const FigmaInput: React.FC<FigmaInputProps> = ({
   onFetch,
   isLoading = false,
   onSaveToken,
-  onClearToken
+  onClearToken,
 }) => {
+  const [showToken, setShowToken] = useState(false);
+
+  // Check if a node ID is present to warn the user
+  const hasNodeId = figmaUrl.includes("node-id=");
+
   return (
     <div className="figma-input">
       <div className="input-group">
-        <label htmlFor="figma-url">Figma File URL</label>
+        <label htmlFor="figma-url">Figma File or Design URL</label>
         <input
           id="figma-url"
           type="text"
           value={figmaUrl}
           onChange={(e) => onUrlChange(e.target.value)}
-          placeholder="https://www.figma.com/file/..."
+          placeholder="https://www.figma.com/design/..."
           disabled={isLoading}
+          className={!hasNodeId && figmaUrl ? "warning-border" : ""}
         />
-        <small>
-          Include the <code>node-id</code> parameter to target a specific component or frame.
-          <br />
-          Example: <code>https://www.figma.com/file/abc123/Design?node-id=123-456</code>
+        <small style={{ color: hasNodeId ? "inherit" : "#e67e22", margin: 0 }}>
+          {hasNodeId
+            ? "Targeting specific node for compression."
+            : "Tip: Select a specific frame in Figma and copy that link for better results."}
         </small>
       </div>
-      
+
       <div className="input-group">
         <label htmlFor="figma-token">Figma API Token</label>
-        <input
-          id="figma-token"
-          type="password"
-          value={figmaToken}
-          onChange={(e) => onTokenChange(e.target.value)}
-          placeholder="Paste your Figma API token here"
-          disabled={isLoading}
-        />
-        <small>
-          You can generate a personal access token in your 
-          <a href="https://www.figma.com/developers/api#access-tokens" target="_blank" rel="noopener noreferrer">
-            {' '}Figma account settings
-          </a>
-        </small>
-        
+        <div
+          className="token-input-wrapper"
+          style={{ display: "flex", gap: "8px" }}
+        >
+          <input
+            id="figma-token"
+            type={showToken ? "text" : "password"}
+            value={figmaToken}
+            onChange={(e) => onTokenChange(e.target.value)}
+            placeholder="figd_..."
+            disabled={isLoading}
+            style={{ flex: 1 }}
+          />
+          <button
+            type="button"
+            onClick={() => setShowToken(!showToken)}
+            className="secondary-btn"
+          >
+            {showToken ? "Hide" : "Show"}
+          </button>
+        </div>
+
         {(onSaveToken || onClearToken) && (
-          <div className="token-actions">
+          <div
+            className="token-actions"
+            style={{ marginTop: "8px", display: "flex", gap: "10px" }}
+          >
             {onSaveToken && (
-              <button 
+              <button
                 onClick={onSaveToken}
                 disabled={!figmaToken.trim() || isLoading}
                 className="save-token-btn"
                 type="button"
               >
-                Save Token
+                Save Token Locally
               </button>
             )}
             {onClearToken && (
-              <button 
+              <button
                 onClick={onClearToken}
                 disabled={isLoading}
                 className="clear-token-btn"
                 type="button"
               >
-                Clear Token
+                Clear
               </button>
             )}
           </div>
         )}
       </div>
-      
-      <button 
+
+      <button
+        className="btn-primary main-fetch-btn"
         onClick={onFetch}
         disabled={!figmaUrl || !figmaToken || isLoading}
+        style={{ width: "100%", marginTop: "1rem" }}
       >
-        {isLoading ? 'Fetching...' : 'Fetch Components'}
+        {isLoading ? "Processing Pipeline..." : "Fetch & Compress for LLM"}
       </button>
     </div>
   );
 };
 
-export default FigmaInput; 
+export default FigmaInput;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from '../utils/toast';
 
 interface CodeOutputProps {
   code: string;
@@ -7,7 +8,7 @@ interface CodeOutputProps {
 const CodeOutput: React.FC<CodeOutputProps> = ({ code }) => {
   const handleCopyCode = () => {
     navigator.clipboard.writeText(code);
-    alert('Code copied to clipboard!');
+    toast("Minified JSON copied!");
   };
   
   return (

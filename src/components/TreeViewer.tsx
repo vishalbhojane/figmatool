@@ -1,31 +1,26 @@
 import React from 'react';
 
-interface FigmaNode {
-  id: string;
-  name: string;
-  type: string;
-  description?: string;
-  children?: FigmaNode[];
-  properties?: Record<string, any>;
+// Interface matching our Compressed format
+interface CompressedNode {
+  n: string;   // name
+  t: string;   // type
+  c?: CompressedNode[]; // children
+  v?: string;  // characters/value
+  id?: string;
+  [key: string]: any;
 }
 
 interface TreeViewerProps {
-  node: FigmaNode;
+  node: CompressedNode;
   depth?: number;
 }
 
 const TypeColorMap: Record<string, string> = {
-  FRAME: '#2196F3',      // Blue
-  COMPONENT: '#4CAF50',  // Green
-  COMPONENT_SET: '#9C27B0', // Purple
-  TEXT: '#FF9800',       // Orange
-  INSTANCE: '#F44336',   // Red
-  GROUP: '#607D8B',      // Blue Grey
-  RECTANGLE: '#795548',  // Brown
-  ELLIPSE: '#FF5722',    // Deep Orange
-  VECTOR: '#9E9E9E',     // Grey
-  LINE: '#BDBDBD',       // Light Grey
-  DEFAULT: '#424242'     // Dark Grey
+  FR: '#2196F3',      // Frame
+  TX: '#FF9800',      // Text
+  IC: '#9E9E9E',      // Icon/Vector
+  RE: '#795548',      // Rectangle
+  DEFAULT: '#424242'
 };
 
 const TreeViewer: React.FC<TreeViewerProps> = ({ node, depth = 0 }) => {
@@ -33,74 +28,71 @@ const TreeViewer: React.FC<TreeViewerProps> = ({ node, depth = 0 }) => {
     return TypeColorMap[type] || TypeColorMap.DEFAULT;
   };
   
-  // Set max depth to prevent too deep nesting
   const maxDepth = 10;
   
-  // Basic style for the node box
   const boxStyle: React.CSSProperties = {
-    border: `2px solid ${getTypeColor(node.type)}`,
-    borderRadius: '4px',
-    padding: '10px',
-    margin: '5px',
-    backgroundColor: `${getTypeColor(node.type)}22`, // Add transparency
-    overflow: 'hidden',
-    minHeight: depth > maxDepth ? '30px' : 'auto',
-    position: 'relative'
+    border: `1.5px solid ${getTypeColor(node.t)}`,
+    borderRadius: '6px',
+    padding: '8px',
+    margin: '4px 0',
+    backgroundColor: `${getTypeColor(node.t)}10`, // Subtle transparency
+    position: 'relative',
+    transition: 'all 0.2s ease'
   };
   
-  // Style for node header
   const headerStyle: React.CSSProperties = {
-    fontWeight: 'bold',
-    marginBottom: '5px',
-    fontSize: `${Math.max(16 - depth, 11)}px`, // Decrease font size with depth
+    fontWeight: '600',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: `${Math.max(14 - depth * 0.5, 11)}px`,
+  };
+  
+  const typeBadgeStyle: React.CSSProperties = {
+    backgroundColor: getTypeColor(node.t),
+    color: 'white',
+    padding: '1px 5px',
+    borderRadius: '3px',
+    fontSize: '9px',
+    textTransform: 'uppercase'
+  };
+
+  const textPreviewStyle: React.CSSProperties = {
+    fontStyle: 'italic',
+    color: '#666',
+    fontSize: '11px',
+    marginLeft: '10px',
+    whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap'
+    maxWidth: '200px'
   };
   
-  // Style for node type badge
-  const typeBadgeStyle: React.CSSProperties = {
-    display: 'inline-block',
-    backgroundColor: getTypeColor(node.type),
-    color: 'white',
-    padding: '2px 6px',
-    borderRadius: '4px',
-    fontSize: '10px',
-    marginLeft: '5px'
-  };
-  
-  // Style for node children container
-  const childrenStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: '10px'
-  };
-  
-  // If depth is too deep, just show a simplified representation
   if (depth > maxDepth) {
-    return (
-      <div style={boxStyle}>
-        <div style={headerStyle}>
-          {node.name}
-          <span style={typeBadgeStyle}>{node.type}</span>
-        </div>
-        <div style={{ fontSize: '10px' }}>+ more nested components</div>
-      </div>
-    );
+    return <div style={{ fontSize: '10px', padding: '5px' }}>... (Max Depth)</div>;
   }
   
   return (
     <div style={boxStyle}>
       <div style={headerStyle}>
-        {node.name}
-        <span style={typeBadgeStyle}>{node.type}</span>
+        <span style={typeBadgeStyle}>{node.t}</span>
+        <span>{node.n}</span>
+        {node.v && <span style={textPreviewStyle}>"{node.v}"</span>}
       </div>
       
-      {node.children && node.children.length > 0 && (
-        <div style={childrenStyle}>
-          {node.children.map((child) => (
+      {/* Use node.c instead of node.children */}
+      {node.c && node.c.length > 0 && (
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          marginLeft: '12px',
+          marginTop: '6px',
+          borderLeft: '1px dashed #ccc',
+          paddingLeft: '8px'
+        }}>
+          {node.c.map((child, i) => (
             <TreeViewer 
-              key={child.id} 
+              key={`${child.n}-${i}`} 
               node={child} 
               depth={depth + 1} 
             />
@@ -111,4 +103,4 @@ const TreeViewer: React.FC<TreeViewerProps> = ({ node, depth = 0 }) => {
   );
 };
 
-export default TreeViewer; 
+export default TreeViewer;
