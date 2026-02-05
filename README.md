@@ -19,18 +19,21 @@ A tool to convert Figma designs to React code.
 ### Installation
 
 1. Clone the repository
-```
+
+```bash
 git clone git@github.com:vishalbhojane/figmatool.git
 cd figmatool
 ```
 
 2. Install dependencies
-```
+
+```bash
 npm install
 ```
 
 3. Start the development server
-```
+
+```bash
 npm start
 ```
 
